@@ -42,16 +42,19 @@ public class TrainerTrainingSummaryService {
 
         if (summary == null) {
             log.info("[{}] Trainer not found, creating new summary", transactionId);
-            summary = new TrainerTrainingSummary();
-            summary.setTrainerUsername(request.getTrainerUsername());
-            summary.setFirstName(request.getFirstName());
-            summary.setLastName(request.getLastName());
-            summary.setStatus(request.isActive());
-            summary.setYears(new HashMap<>());
+            summary = TrainerTrainingSummary.builder()
+                    .trainerUsername(request.getTrainerUsername())
+                    .firstName(request.getFirstName())
+                    .lastName(request.getLastName())
+                    .status(request.isActive())
+                    .years(new HashMap<>())
+                    .build();
         } else {
-            summary.setFirstName(request.getFirstName());
-            summary.setLastName(request.getLastName());
-            summary.setStatus(request.isActive());
+            summary = TrainerTrainingSummary.builder()
+                            .firstName(request.getFirstName())
+                            .lastName(request.getLastName())
+                            .status(request.isActive())
+                            .build();
         }
 
         Map<Integer, Map<Integer, Integer>> years = summary.getYears();
