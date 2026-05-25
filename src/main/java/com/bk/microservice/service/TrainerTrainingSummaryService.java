@@ -38,23 +38,23 @@ public class TrainerTrainingSummaryService {
         int year = request.getTrainingDate().getYear();
         int month = request.getTrainingDate().getMonthValue();
 
-        TrainerTrainingSummary summary = repository.findById(request.getTrainerUsername()).orElse(null);
-
-        if (summary == null) {
+        TrainerTrainingSummary summary = repository.findById(request.getTrainerUsername()).orElseGet(() -> {
             log.info("[{}] Trainer not found, creating new summary", transactionId);
-            summary = TrainerTrainingSummary.builder()
+            return TrainerTrainingSummary.builder()
                     .trainerUsername(request.getTrainerUsername())
                     .firstName(request.getFirstName())
                     .lastName(request.getLastName())
                     .status(request.isActive())
                     .years(new HashMap<>())
                     .build();
-        } else {
-            summary = TrainerTrainingSummary.builder()
-                            .firstName(request.getFirstName())
-                            .lastName(request.getLastName())
-                            .status(request.isActive())
-                            .build();
+        });
+
+        summary.setFirstName(request.getFirstName());
+        summary.setLastName(request.getLastName());
+        summary.setStatus(request.isActive());
+
+        if (summary.getYears() == null) {
+            summary.setYears(new HashMap<>());
         }
 
         Map<Integer, Map<Integer, Integer>> years = summary.getYears();
