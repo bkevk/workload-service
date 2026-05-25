@@ -1,5 +1,6 @@
 package com.bk.microservice.entity;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
@@ -11,6 +12,7 @@ import java.util.Map;
 
 @Document(collection = "trainer_training_summary")
 @CompoundIndex(name = "name_idx", def = "{'firstName': 1, 'lastName': 1}")
+@Builder
 @Getter
 @Setter
 public class TrainerTrainingSummary {
